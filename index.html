@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYYOUB BERNI |Video Editor & Designer</title>
+    
+    <!-- External Resources -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #00f0ff;
+            --secondary: #ff00e6;
+            --dark: #0a0a0f;
+            --light: #f0f0f0;
+        }
+        
+        /* Base Styles */
+        body {
+            font-family: 'Sora', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        /* Text & Background Utilities */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .glow {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+        }
+        
+        /* Border Effects */
+        .gradient-border {
+            position: relative;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        /* Navigation Effects */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .active-nav::after {
+            width: 100%;
+        }
+        
+        /* Card Effects */
+        .project-card:hover .project-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 240, 255, 0.1), 0 10px 10px -5px rgba(0, 240, 255, 0.04);
+        }
+        
+        /* Form Elements */
+        .input-field:focus {
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        
+        /* Background Elements */
+        .blob {
+            position: absolute;
+            filter: blur(40px);
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        .blob-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 10%;
+            left: 10%;
+        }
+        
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            bottom: 10%;
+            right: 10%;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .hero-button {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- ==================== Background Elements ==================== -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    
+    <!-- ==================== Navigation ==================== -->
+    <nav class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-2xl font-bold gradient-text">AYYOUB BERNI</a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="nav-link relative px-3 py-2 text-sm font-medium text-white">Home</a>
+                        <a href="#projects" class="nav-link relative px-3 py-2 text-sm font-medium text-white">Projects</a>
+                        <a href="#about" class="nav-link relative px-3 py-2 text-sm font-medium text-white">About</a>
+                        <a href="#services" class="nav-link relative px-3 py-2 text-sm font-medium text-white">Services</a>
+                        <a href="#contact" class="nav-link relative px-3 py-2 text-sm font-medium text-white">Contact</a>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-white">Home</a>
+                <a href="#projects" class="block px-3 py-2 text-base font-medium text-white">Projects</a>
+                <a href="#about" class="block px-3 py-2 text-base font-medium text-white">About</a>
+                <a href="#services" class="block px-3 py-2 text-base font-medium text-white">Services</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-white">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== Hero Section ==================== -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 glow">AYYOUB BERNI</h1>
+            <h2 class="text-2xl md:text-3xl font-medium mb-6 text-gray-300">|Video Editor & Designer</h2>
+            <p class="text-xl md:text-2xl mb-8 gradient-text font-medium">Turn your vision into a cinematic masterpiece—let my edits bring your story to life.</p>
+            
+            <a href="#projects" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 hero-button">
+                View Projects
+            </a>
+            
+            <div class="mt-16 scroll-indicator">
+                <span class="block text-sm text-gray-400 mb-2">Scroll Down</span>
+                <svg class="w-6 h-6 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== Projects Section ==================== -->
+    <section id="projects" class="py-20 bg-black bg-opacity-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center gradient-text">Featured Projects</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card relative rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-95">
+                    <div class="relative aspect-video">
+                        <img src="images/thumbnail.jpeg" alt="Project 1" class="w-full h-full object-cover">
+                        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Long video</h3>
+                            <p class="text-gray-300 mb-4">All Categories</p>
+                            <a href="Long video.html" class="text-sm font-medium gradient-text">View Project →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card relative rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-95">
+                    <div class="relative aspect-video">
+                        <img src="images/Nouveau projet (1).png" alt="Project 2" class="w-full h-full object-cover">
+                        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Short video</h3>
+                            <p class="text-gray-300 mb-4">All Categories</p>
+                            <a href="Shorts video.html" class="text-sm font-medium gradient-text">View Project →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card relative rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-95">
+                    <div class="relative aspect-video">
+                        <img src="images/thumbnail (1).jpeg" alt="Project 3" class="w-full h-full object-cover">
+                        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Thumbnail</h3>
+                            <p class="text-gray-300 mb-4">All Categories</p>
+                            <a href="Thumbnail.html" class="text-sm font-medium gradient-text">View Project →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            
+            
+        </div>
+    </section>
+
+    <!-- ==================== About Section ==================== -->
+    <section id="about" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center gradient-text">About Me</h2>
+            
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/3 flex justify-center">
+                    <div class="relative gradient-border rounded-full overflow-hidden w-64 h-64">
+                        <img src="images/profile-pic.png" alt="ayyoub" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <div class="lg:w-2/3">
+                    <h3 class="text-2xl font-bold mb-4">Transform Your Content with a Pro Video Editor</h3>
+                    <p class="text-gray-300 mb-6">Do you have great content, but your videos don’t look the way they should?
+Tired of edits that feel generic, lack impact, or just don’t connect with your audience?
+That’s where I come in.
+
+I’m AYYOUB BERNI, a professional video editor helping creators, brands, and businesses turn raw footage into polished, impactful content that stands out.
+
+Whether you need cinematic storytelling, fast-paced social content, or brand-focused promo videos — I bring the technical skill and creative eye to deliver results.
+
+With tools like Adobe Premiere Pro, After Effects, and DaVinci Resolve, I provide smooth workflows, fast delivery, and studio-quality results — without the studio price tag.</p>
+                    
+                    <div class="mb-8">
+                        <h4 class="text-xl font-semibold mb-3 gradient-text">Tools & Technologies</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-3 py-1 rounded-full bg-gray-800 text-sm text-gray-300">Adobe Premiere Pro</span>
+                            <span class="px-3 py-1 rounded-full bg-gray-800 text-sm text-gray-300">After Effects</span>
+                            <span class="px-3 py-1 rounded-full bg-gray-800 text-sm text-gray-300">DaVinci Resolve</span>
+                            <span class="px-3 py-1 rounded-full bg-gray-800 text-sm text-gray-300">Photoshop</span>
+                            
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-3 gradient-text">Experience Highlights</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 h-5 w-5 gradient-text">✓</span>
+                                <span class="ml-2 text-gray-300"> Edited videos for small businesses and local creators</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 h-5 w-5 gradient-text">✓</span>
+                                <span class="ml-2 text-gray-300"> Created engaging social media content for growing YouTube channels</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 h-5 w-5 gradient-text">✓</span>
+                                <span class="ml-2 text-gray-300"> Skilled in Adobe Premiere Pro, After Effects, and DaVinci Resolve</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 h-5 w-5 gradient-text">✓</span>
+                                <span class="ml-2 text-gray-300"> Developed motion graphics and animated titles</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== Services Section ==================== -->
+    <section id="services" class="py-20 bg-black bg-opacity-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center gradient-text">Services</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="service-card bg-gray-900 rounded-xl p-8 transition-all duration-300 hover:border-b-4 hover:border-cyan-500">
+                    <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mb-6 gradient-text text-3xl">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Video Editing</h3>
+                    <p class="text-gray-400">Professional editing for commercials, music videos, and digital content with seamless transitions and dynamic pacing.</p>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="service-card bg-gray-900 rounded-xl p-8 transition-all duration-300 hover:border-b-4 hover:border-purple-500">
+                    <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mb-6 gradient-text text-3xl">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Motion Graphics</h3>
+                    <p class="text-gray-400">Eye-catching animations and kinetic typography to elevate your brand's visual communication.</p>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="service-card bg-gray-900 rounded-xl p-8 transition-all duration-300 hover:border-b-4 hover:border-pink-500">
+                    <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mb-6 gradient-text text-3xl">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Branding</h3>
+                    <p class="text-gray-400">Comprehensive visual identity development including logos, color schemes, and brand guidelines.</p>
+                </div>
+                
+                <!-- Service 4 -->
+                <div class="service-card bg-gray-900 rounded-xl p-8 transition-all duration-300 hover:border-b-4 hover:border-blue-500">
+                    <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mb-6 gradient-text text-3xl">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">3D Visuals</h3>
+                    <p class="text-gray-400">Immersive 3D modeling and animation for product visualization, architectural renders, and more.</p>
+                </div>
+                
+                <!-- Service 5 -->
+                <div class="service-card bg-gray-900 rounded-xl p-8 transition-all duration-300 hover:border-b-4 hover:border-green-500">
+                    <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mb-6 gradient-text text-3xl">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">UI Animation</h3>
+                    <p class="text-gray-400">Interactive micro-interactions and transitions to enhance user experience in digital products.</p>
+                </div>
+                
+                <!-- Service 6 -->
+                <div class="service-card bg-gray-900 rounded-xl p-8 transition-all duration-300 hover:border-b-4 hover:border-yellow-500">
+                    <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mb-6 gradient-text text-3xl">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Visual Effects</h3>
+                    <p class="text-gray-400">High-end VFX compositing for film, television, and digital media to bring impossible visions to life.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="contact" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center gradient-text">Get In Touch</h2>
+            
+            <div class="max-w-2xl mx-auto bg-gray-900 rounded-xl p-8 gradient-border">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center mx-auto mb-4 gradient-text text-4xl">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Email Me</h3>
+                    <a href="mailto:ayyoub.berni@example.com" class="text-xl gradient-text font-medium hover:underline">businessonlinesup2025@gmail.com</a>
+                </div>
+                
+                <p class="text-gray-300 text-center">
+                    Have a project in mind or want to discuss potential collaboration? 
+                    Feel free to reach out via email and I'll get back to you as soon as possible.
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- ==================== Footer ==================== -->
+    <footer class="py-12 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold gradient-text">AYYOUB BERNI</a>
+                    <p class="text-gray-400 mt-2">© 2025 All Rights Reserved</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#home" class="text-gray-400 hover:text-white transition-colors duration-300">Home</a>
+                    <a href="#projects" class="text-gray-400 hover:text-white transition-colors duration-300">Projects</a>
+                    <a href="#about" class="text-gray-400 hover:text-white transition-colors duration-300">About</a>
+                    <a href="#services" class="text-gray-400 hover:text-white transition-colors duration-300">Services</a>
+                    <a href="#contact" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== JavaScript ==================== -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Highlight active navigation link while scrolling
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active-nav');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active-nav');
+                }
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.pageYOffset;
+            const heroSection = document.getElementById('home');
+            heroSection.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+        });
+
+        // Animate elements when they come into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.project-card, .service-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
